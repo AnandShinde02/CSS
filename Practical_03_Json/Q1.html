@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>JSON Object Example</title>
 </head>
+
 <body>
 
-<h2>JSON Object Output</h2>
-<p id="output"></p>
+    <h2>JSON Object Output</h2>
+    <p id="output"></p>
 
-<script>
-    let student = {
-        "name": "Anand",
-        "rollNo": 101,
-        "course": "Client Side Scripting",
-        "marks": {
-            "HTML": 85,
-            "CSS": 90,
-            "JavaScript": 88
-        }
-    };
+    <script>
+        let student = {
+            "name": "Anand",
+            "rollNo": 101,
+            "course": "Client Side Scripting",
+            "marks": {
+                "HTML": 85,
+                "CSS": 90,
+                "JavaScript": 88
+            }
+        };
 
-    let result =
-        "Name: " + student.name + "<br>" +
-        "Roll No: " + student.rollNo + "<br>" +
-        "Course: " + student.course + "<br>" +
-        "HTML Marks: " + student.marks.HTML + "<br>" +
-        "CSS Marks: " + student.marks.CSS;
+        let result =
+            "Name: " + student.name + "<br>" +
+            "Roll No: " + student.rollNo + "<br>" +
+            "Course: " + student.course + "<br>" +
+            "HTML Marks: " + student.marks.HTML + "<br>" +
+            "CSS Marks: " + student.marks.CSS;
 
-    document.getElementById("output").innerHTML = result;
-</script>
-
+        document.getElementById("output").innerHTML = result;
+    </script>
 </body>
+
 </html>
