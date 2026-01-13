@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="eventApp">
+<head>
+    <title>AngularJS Events</title>
+
+    <!-- AngularJS CDN -->
+    <script 
+
+src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js">
+</script>
+</head>
+
+<body ng-controller="eventCtrl">
+
+    <h2>AngularJS Events Example</h2>
+
+    <!-- Mouse Events -->
+    <div ng-mouseover="mouseOver()"
+         ng-mouseleave="mouseLeave()">
+        Move Mouse Here
+    </div>
+
+    <br>
+
+    <!-- Click Events -->
+    <button ng-click="singleClick()">Click Me</button>
+    <button ng-dblclick="doubleClick()">Double Click Me</button>
+
+    <br><br>
+
+
+
+    <!-- AngularJS Script -->
+    <script>
+
+    </script>
+</body>
+</html>
