@@ -1,63 +1,74 @@
 import React, { useState } from "react";
 
 function App() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [submittedData, setSubmittedData] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // stops page reload
+const [name, setName] = useState("");
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const [submittedData, setSubmittedData] = useState(null);
 
-    setSubmittedData({
-      name: name,
-      email: email
-    });
-  };
+const handleSubmit = (e) => {
+e.preventDefault();
 
-  return (
-    <div style={{ padding: "30px" }}>
-      <h2>React Form Handling Example</h2>
+setSubmittedData({
+name: name,
+email: email,
+password: password
+});
 
-      <form onSubmit={handleSubmit}>
+// Clear inputs after submission
+setName("");
+setEmail("");
+setPassword("");
+};
 
-        <div>
-          <label>Name: </label>
-          <input 
-            type="text" 
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <br />
+return (
+<div style={{ padding: "30px" }}>
+<h2>React Form Handling</h2>
 
-        <div>
-          <label>Email: </label>
-          <input 
-            type="email" 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <br />
+<form onSubmit={handleSubmit}>
+<label>Name:</label><br />
+<input
+type="text"
+value={name}
+onChange={(e) => setName(e.target.value)}
+required
+/>
+<br /><br />
 
-        <button type="submit">Submit</button>
+<label>Email:</label><br />
+<input
+type="email"
+value={email}
+onChange={(e) => setEmail(e.target.value)}
+required
+/>
+<br /><br />
 
-      </form>
+<label>Password:</label><br />
+<input
+type="password"
+value={password}
+onChange={(e) => setPassword(e.target.value)}
+required
+/>
+<br /><br />
 
-      <br />
+<button type="submit">Submit</button>
+</form>
 
-      {submittedData && (
-        <div>
-          <h3>Submitted Data:</h3>
-          <p><b>Name:</b> {submittedData.name}</p>
-          <p><b>Email:</b> {submittedData.email}</p>
-        </div>
-      )}
+<hr />
 
-    </div>
-  );
+{submittedData && (
+<div>
+<h3>Submitted Data</h3>
+<p>Name: {submittedData.name}</p>
+<p>Email: {submittedData.email}</p>
+<p>Password: {submittedData.password}</p>
+</div>
+)}
+</div>
+);
 }
 
 export default App;
