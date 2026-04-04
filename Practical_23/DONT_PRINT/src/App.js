@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "./App.css";
 
 const songs = [
@@ -17,13 +17,18 @@ const songs = [
 ];
 
 function App() {
+
   const audioRef = useRef(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [search, setSearch] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [volume, setVolume] = useState(1);
 
   const currentSong = songs[currentIndex];
 
+  // Play / Pause
   const playPause = () => {
     if (isPlaying) {
       audioRef.current.pause();
@@ -33,17 +38,52 @@ function App() {
     setIsPlaying(!isPlaying);
   };
 
+  // Next Song
   const nextSong = () => {
     setCurrentIndex((currentIndex + 1) % songs.length);
     setIsPlaying(false);
   };
 
+  // Previous Song
   const prevSong = () => {
     setCurrentIndex(
       (currentIndex - 1 + songs.length) % songs.length
     );
     setIsPlaying(false);
   };
+
+  // Auto next when song ends
+  const handleEnd = () => {
+    nextSong();
+  };
+
+  // Progress Update
+  const updateProgress = () => {
+    const current = audioRef.current.currentTime;
+    const duration = audioRef.current.duration;
+    setProgress((current / duration) * 100);
+  };
+
+  // Seek
+  const seek = (e) => {
+    const width = e.target.clientWidth;
+    const clickX = e.nativeEvent.offsetX;
+    const duration = audioRef.current.duration;
+
+    audioRef.current.currentTime = (clickX / width) * duration;
+  };
+
+  // Volume
+  const changeVolume = (e) => {
+    const vol = e.target.value;
+    audioRef.current.volume = vol;
+    setVolume(vol);
+  };
+
+  // Filter songs
+  const filteredSongs = songs.filter(song =>
+    song.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="app">
@@ -53,30 +93,23 @@ function App() {
         <h2>🎵 Spotify</h2>
         <p>Home</p>
         <p>Search</p>
-        <p>Your Library</p>
+        <p>Library</p>
       </div>
 
-      {/* Main Content */}
+      {/* Main */}
       <div className="main">
 
-        {/* Search Bar */}
         <input
-          type="text"
-          placeholder="Search songs..."
           className="search"
+          placeholder="Search songs..."
+          onChange={(e) => setSearch(e.target.value)}
         />
 
-        <h2>Trending Songs</h2>
-
         <div className="song-list">
-          {songs.map((song, index) => (
+          {filteredSongs.map((song, index) => (
             <div
               key={index}
-              className={
-                index === currentIndex
-                  ? "song-card active"
-                  : "song-card"
-              }
+              className="song-card"
               onClick={() => setCurrentIndex(index)}
             >
               <img src={song.cover} alt="" />
@@ -85,11 +118,13 @@ function App() {
             </div>
           ))}
         </div>
+
       </div>
 
-      {/* Bottom Player */}
+      {/* Player Bar */}
       <div className="player-bar">
 
+        {/* Song Info */}
         <div className="song-info">
           <img src={currentSong.cover} alt="" />
           <div>
@@ -98,6 +133,7 @@ function App() {
           </div>
         </div>
 
+        {/* Controls */}
         <div className="controls">
           <button onClick={prevSong}>⏮</button>
           <button onClick={playPause}>
@@ -106,7 +142,30 @@ function App() {
           <button onClick={nextSong}>⏭</button>
         </div>
 
-        <audio ref={audioRef} src={currentSong.src}></audio>
+        {/* Progress */}
+        <div className="progress-container" onClick={seek}>
+          <div
+            className="progress"
+            style={{ width: `${progress}%` }}
+          ></div>
+        </div>
+
+        {/* Volume */}
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.1"
+          value={volume}
+          onChange={changeVolume}
+        />
+
+        <audio
+          ref={audioRef}
+          src={currentSong.src}
+          onTimeUpdate={updateProgress}
+          onEnded={handleEnd}
+        />
 
       </div>
 
